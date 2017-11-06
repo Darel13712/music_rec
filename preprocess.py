@@ -2,7 +2,9 @@ import librosa
 import numpy as np
 
 def get_features(filename):
-    '''Returns stacked beat-synchronous features for a given file. Features calculated are timbre, chroma and max_loudness.
+    '''
+    Returns stacked beat-synchronous features for a given file. 
+    Features calculated are timbre[12], chroma[12] and max_loudness[1].
     '''
     y, sr = librosa.load(filename, sr=None)
     
@@ -20,6 +22,9 @@ def get_features(filename):
 
     # Next, we'll extract the top 12 Mel-frequency cepstral coefficients (MFCCs)
     mfcc = librosa.feature.mfcc(S=log_S, n_mfcc=12)
+
+    # Now, let's run the beat tracker.
+    tempo, beats = librosa.beat.beat_track(y=y_percussive, sr=sr)
 
     # feature.sync will summarize each beat event by the mean feature vector within that beat
     timbre = librosa.util.sync(mfcc, beats)

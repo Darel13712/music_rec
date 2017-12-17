@@ -28,9 +28,11 @@ def get_features(filename):
 
     # feature.sync will summarize each beat event by the mean feature vector within that beat
     timbre = librosa.util.sync(mfcc, beats)
+    timbre = (timbre + 1000) / 1200 # ~ 0-1 normalization
 
     chroma = librosa.util.sync(C, beats, aggregate=np.median)
     max_loudness = librosa.util.sync(y, beats, aggregate=np.max)
     features = np.vstack([timbre, chroma, max_loudness])
+    features = np.transpose(features)
     
     return features

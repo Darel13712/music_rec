@@ -9,10 +9,10 @@ get_artist = hdf5_getters.get_artist_name
 get_title = hdf5_getters.get_title
 get_num_songs = hdf5_getters.get_num_songs
 get_mbid = hdf5_getters.get_artist_mbid
+get_soid = hdf5_getters.get_song_id
 
 
-def get_features(file, song_index=0) -> np.ndarray:
-    # TODO check that there is one song in hdf5
+def get_features(file, song_index=0):
     """
     Get a set of selected features for a given hdf5 file
 

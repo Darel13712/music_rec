@@ -30,6 +30,15 @@ for filename in tqdm(files):
 #%%
 joblib.dump(df, path.out + 'index.jbl')
 
+
+#%%
+mismatches = []
+with open(path.data + 'sid_mismatches.txt') as f:
+    for line in f.readlines():
+        line = line[line.find('<') + 1:]
+        line = line[:line.find(' ')]
+        mismatches += [line.encode()]
+
 #%%
 
 features = pd.Series()
@@ -46,4 +55,7 @@ for filename in tqdm(files):
     file.close()
 
 #%%
-joblib.dump(features, path.out + 'song_features.jbl')
+filtered = features[~features.index.isin(mismatches)]
+
+#%%
+joblib.dump(filtered, path.out + 'song_features.jbl')

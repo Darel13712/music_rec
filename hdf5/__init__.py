@@ -5,11 +5,15 @@ import hdf5_getters
 get_chroma = hdf5_getters.get_segments_pitches
 get_timbre = hdf5_getters.get_segments_timbre
 get_max_loudness = hdf5_getters.get_segments_loudness_max
+
 get_artist = hdf5_getters.get_artist_name
 get_title = hdf5_getters.get_title
 get_num_songs = hdf5_getters.get_num_songs
+get_album = hdf5_getters.get_release
 get_mbid = hdf5_getters.get_artist_mbid
 get_soid = hdf5_getters.get_song_id
+get_7did = hdf5_getters.get_track_7digitalid
+
 
 
 def get_features(file, song_index=0):

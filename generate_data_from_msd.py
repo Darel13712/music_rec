@@ -7,7 +7,7 @@ import glob
 import pandas as pd
 
 #%%
-df = pd.DataFrame(columns=['song_id', 'artist', 'title'])
+df = pd.DataFrame(columns=['song_id', 'artist', 'title', 'album'])
 h5 = path.mss + 'data/**/*.h5'
 files = list(glob.iglob(h5, recursive=True))
 print(len(files))
@@ -22,9 +22,11 @@ for filename in tqdm(files):
         id     = get_soid  (file, song_index)
         title  = get_title (file, song_index)
         artist = get_artist(file, song_index)
+        album  = get_album (file, song_index)
         df = df.append({'song_id': id,
                         'artist': artist,
-                        'title': title}, ignore_index=True)
+                        'title': title,
+                        'album': album}, ignore_index=True)
 
     file.close()
 #%%
@@ -59,3 +61,10 @@ filtered = features[~features.index.isin(mismatches)]
 
 #%%
 joblib.dump(filtered, path.out + 'song_features.jbl')
+
+#%%
+def read_play_history(path):
+    return pd.read_csv(path, sep='\t', header=None, names=['user', 'song', 'plays'])
+
+#%%
+

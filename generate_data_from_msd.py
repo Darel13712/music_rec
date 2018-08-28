@@ -29,6 +29,8 @@ for filename in tqdm(files):
                         'album': album}, ignore_index=True)
 
     file.close()
+
+df = df.apply(lambda x: x.str.decode('utf-8'), axis=0)
 #%%
 joblib.dump(df, path.out + 'index.jbl')
 
@@ -58,6 +60,7 @@ for filename in tqdm(files):
 
 #%%
 filtered = features[~features.index.isin(mismatches)]
+filtered.index = filtered.index.map(lambda x: x.decode('utf-8'))
 
 #%%
 joblib.dump(filtered, path.out + 'song_features.jbl')

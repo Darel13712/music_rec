@@ -18,7 +18,7 @@ def get_item_attention(play_count: int) -> float:
     Float attention value: [0..1]
     """
     if play_count > 0:
-        return np.log10(play_count + 0.5) if play_count < 10 else 1.0
+        return np.log10(play_count + 0.3) if play_count < 10 else 1.0
     elif play_count == 0:
         return 0.0
     else:

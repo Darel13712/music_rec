@@ -19,7 +19,7 @@ def get_features(filename):
     S = librosa.feature.melspectrogram(y, sr=sr, n_mels=128)
 
     # Convert to log scale (dB). We'll use the peak power as reference.
-    log_S = librosa.logamplitude(S, ref_power=np.max)
+    log_S = librosa.amplitude_to_db(S, ref=np.max)
 
     # Next, we'll extract the top 12 Mel-frequency cepstral coefficients (MFCCs)
     mfcc = librosa.feature.mfcc(S=log_S, n_mfcc=12)

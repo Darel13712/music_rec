@@ -66,8 +66,4 @@ filtered.index = filtered.index.map(lambda x: x.decode('utf-8'))
 joblib.dump(filtered, path.out + 'song_features.jbl')
 
 #%%
-def read_play_history(path):
-    return pd.read_csv(path, sep='\t', header=None, names=['user', 'song', 'plays'])
-
-#%%
 

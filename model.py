@@ -1,13 +1,10 @@
 import pandas as pd
 import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from sklearn.externals import joblib
 
 from config import path
 from collections import namedtuple
+
+from loaders import load
 
 Triple = namedtuple('Triple', ['user', 'song', 'known', 'unknown'])
 #%%
@@ -78,12 +75,9 @@ def get_components(features: pd.DataFrame, song: str) -> np.array:
 
 
 #%%
-def read_play_history(path):
-    return pd.read_csv(path, sep='\t', header=None, names=['user', 'song', 'plays'])
 #%%
-df = read_play_history(path.data + 'EvalDataYear1MSDWebsite/year1_test_triplets_hidden.txt')
-index = joblib.load(path.out + 'index.jbl')
-features = joblib.load(path.out + 'song_features.jbl')
+train, query, test, index, features = load(subset=True)
+
 #%%
 current = draw_triple(df, index)
 played_songs = get_played_songs(df, current.user)

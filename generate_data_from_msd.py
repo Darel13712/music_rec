@@ -23,16 +23,21 @@ for filename in tqdm(files):
         title  = get_title (file, song_index)
         artist = get_artist(file, song_index)
         album  = get_album (file, song_index)
+        mbid   = get_mbid  (file, song_index)
+        id7    = get_7did  (file, song_index)
         df = df.append({'song_id': id,
-                        'artist': artist,
-                        'title': title,
-                        'album': album}, ignore_index=True)
+                        'artist' : artist,
+                        'title'  : title,
+                        'album'  : album,
+                        'mb_id'  : mbid,
+                        'd7_id'   : id7},
+                       ignore_index=True)
 
     file.close()
 
 df = df.apply(lambda x: x.str.decode('utf-8'), axis=0)
 #%%
-joblib.dump(df, path.out + 'index.jbl')
+df.to_csv(path.out + 'msd_index.csv', index=False)
 
 
 #%%
@@ -63,7 +68,7 @@ filtered = features[~features.index.isin(mismatches)]
 filtered.index = filtered.index.map(lambda x: x.decode('utf-8'))
 
 #%%
-joblib.dump(filtered, path.out + 'song_features.jbl')
+filtered.to_csv(path.out + 'msd_features.csv')
 
 #%%
 

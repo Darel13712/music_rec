@@ -6,7 +6,8 @@ from collections import namedtuple
 
 from loaders import load
 
-Triple = namedtuple('Triple', ['user', 'song', 'known', 'unknown'])
+Triple  = namedtuple('Triple',  ['user', 'positive', 'negative'])
+Triplet = namedtuple('Triplet', ['user', 'anchor', 'positive', 'negative'])
 #%%
 def get_sample(df):
     return df.sample(n=1).iloc[0]
@@ -34,7 +35,7 @@ def get_item_attention(play_count: int) -> float:
     else:
         raise ValueError('play_count cannot be negative (got {})'.format(play_count))
 
-def draw_triple(play_counts: pd.DataFrame, index: pd.DataFrame) -> Triple:
+def draw_triple(play_counts: pd.DataFrame, index: pd.DataFrame) -> Triplet:
     """
     Get random triple (user, current song, played song, not played song)
 
@@ -65,7 +66,7 @@ def draw_triple(play_counts: pd.DataFrame, index: pd.DataFrame) -> Triple:
     while unknown_song in all_played_songs: # whatif user listened all the songs?
         unknown_song = get_sample(index).song_id
 
-    return Triple(user, current_song, known_song, unknown_song)
+    return Triplet(user, current_song, known_song, unknown_song)
 
 def get_played_songs(play_counts: pd.DataFrame, user: str) -> pd.Series:
     return play_counts.loc[play_counts.user == user, 'song'].values
@@ -79,11 +80,17 @@ def get_components(features: pd.DataFrame, song: str) -> np.array:
 train, query, test, index, features = load(subset=True)
 
 #%%
-current = draw_triple(df, index)
-played_songs = get_played_songs(df, current.user)
+current = draw_triple(train, index)
+played_songs = get_played_songs(train, current.user)
 
 
 #%%
-c = get_components(features, current.unknown)
+c = get_components(features, current.negative)
+#%%
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
 
-
+#%%
+embedding = nn.Embedding(len(index), 50)

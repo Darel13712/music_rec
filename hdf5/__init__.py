@@ -1,5 +1,5 @@
 import numpy as np
-import hdf5_getters
+import hdf5.hdf5_getters
 
 # My wrapping of hdf5 wrapper to make code look cleaner
 get_chroma = hdf5_getters.get_segments_pitches
